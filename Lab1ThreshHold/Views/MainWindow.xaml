@@ -1,0 +1,13 @@
+﻿<catel:Window
+    x:Class="Lab1ThreshHold.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:catel="http://schemas.catelproject.com"
+    ResizeMode="CanResize">
+    <Grid>
+        <Image
+            x:Name="image1"
+            Source="{Binding Context}"
+            Stretch="Fill" />
+    </Grid>
+</catel:Window>

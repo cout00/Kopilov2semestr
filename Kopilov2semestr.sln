@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kopilov2semestr", "Kopilov2semestr\Kopilov2semestr.csproj", "{0DEF6447-FD8F-4598-9617-B958EA8E4401}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1ThreshHold", "Lab1ThreshHold\Lab1ThreshHold.csproj", "{D5518709-51FC-479D-9ECB-B524ED0C35EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0DEF6447-FD8F-4598-9617-B958EA8E4401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0DEF6447-FD8F-4598-9617-B958EA8E4401}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0DEF6447-FD8F-4598-9617-B958EA8E4401}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0DEF6447-FD8F-4598-9617-B958EA8E4401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5518709-51FC-479D-9ECB-B524ED0C35EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5518709-51FC-479D-9ECB-B524ED0C35EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5518709-51FC-479D-9ECB-B524ED0C35EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5518709-51FC-479D-9ECB-B524ED0C35EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
