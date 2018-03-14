@@ -1,26 +1,53 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Catel.Data;
 using Catel.Windows.Threading;
+using DevExpress.Xpf.Charts;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Lab1ThreshHold.Infrastructure;
+using Lab1ThreshHold.Infrastructure.Captures;
+using Lab1ThreshHold.Views;
+using Ninject;
+using Image = System.Windows.Controls.Image;
 
 namespace Lab1ThreshHold.ViewModels
 {
     using Catel.MVVM;
     using Emgu.CV.CvEnum;
+    using Lab1ThreshHold;
     using System.Threading.Tasks;
 
     public class MainWindowViewModel :ViewModelBase
     {
-        volatile Capture capture = new Capture();
-        private DateTime _dateTime = DateTime.Now;
+        private Image imageSrcLink;
+        private Image imageResLink;
+        private ChartControl chartSrcLink;
+        private ChartControl chartResLink;
         public MainWindowViewModel()
         {
-            
         }
+
+        public BitmapSource ContextChanged
+        {
+            get { return GetValue<BitmapSource>(ContextChangedProperty); }
+            set { SetValue(ContextChangedProperty, value); }
+        }
+
+        public static readonly PropertyData ContextChangedProperty = RegisterProperty("ContextChanged", typeof(BitmapSource));
+
+        public List<System.Windows.Point> Points
+        {
+            get { return GetValue<List<System.Windows.Point>>(PointsProperty); }
+            set { SetValue(PointsProperty, value); }
+        }
+
+        public static readonly PropertyData PointsProperty = RegisterProperty("Points", typeof(List<System.Windows.Point>));
 
         public BitmapSource Context
         {
@@ -28,46 +55,72 @@ namespace Lab1ThreshHold.ViewModels
             set { SetValue(ContextProperty, value); }
         }
 
+        #region PointsRes property
 
-
-
-        public async Task SetCapture()
+        public List<Point> PointsRes
         {
-            var frames = 1;         
-            await Task.Run(() => {
-                while (true)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        var query = capture.QueryFrame().ToImage<Gray, byte>().ApplyFunc(pixel =>
-                        {
-                            return pixel < 128 ? byte.MinValue : byte.MaxValue;
-                        });
-                        var seconds = (DateTime.Now - _dateTime).Seconds==0
-                            ? 1
-                            : (DateTime.Now - _dateTime).Seconds;
-                        var queryBgr = query.Convert<Bgr, float>();
-                        CvInvoke.PutText(queryBgr, "FPS: "+(frames/seconds).ToString(), new System.Drawing.Point(10, 60), FontFace.HersheySimplex, 1.0, new Bgr(Color.Red).MCvScalar);
-                        Context = queryBgr.Bitmap.Convert();                        
-                    });
-                    frames++;
-                    Task.Delay(16).Wait();
-                }
-            });
+            get { return GetValue<List<Point>>(PointsResProperty); }
+            set { SetValue(PointsResProperty, value); }
         }
+
+        public static readonly PropertyData PointsResProperty = RegisterProperty("PointsRes", typeof(List<Point>));
+
+        #endregion
+
 
         public static readonly PropertyData ContextProperty = RegisterProperty("Context", typeof(BitmapSource));
 
         protected override async Task InitializeAsync()
         {
-            await SetCapture();
+            imageSrcLink = Container<Window>.FindElement<Image>(typeof(MainWindow), window => window.Name == "imageSrc");
+            imageResLink = Container<Window>.FindElement<Image>(typeof(MainWindow), window => window.Name == "imageRes");
+            chartSrcLink = Container<ChartControl>.GetElement(control => control.Name == "chartSrc");
+            chartResLink= Container<ChartControl>.GetElement(control => control.Name == "chartRes");
+            Lab2Grip simpleGrip = new Lab2Grip();
+            simpleGrip.OnHistogramPoints += SimpleGrip_OnHistogramPoints;
+            simpleGrip.OnOriginalResult += SimpleGrip_OnOriginalResult;
+            simpleGrip.OnHistogramResultPoints += SimpleGrip_OnHistogramResultPoints;
+            simpleGrip.OnResultImage += SimpleGrip_OnResultImage;
+            await simpleGrip.DoProcessAsync();
+
             await base.InitializeAsync();
+        }
+
+        private void SimpleGrip_OnResultImage(object sender, Infrastructure.FrameCapture.CaptureArgs<Image<Bgr, float>> e)
+        {
+            imageResLink.Dispatcher.Invoke(() => {
+                ContextChanged = e.Result.ToBitmap().Convert();
+            });
+        }
+
+        private void SimpleGrip_OnHistogramResultPoints(object sender, Infrastructure.FrameCapture.CaptureArgs<List<Point>> e)
+        {
+            chartResLink.Dispatcher.Invoke(() => {
+                chartResLink.BeginInit();
+                PointsRes = e.Result;
+                chartResLink.EndInit();
+            });
+        }
+
+        private void SimpleGrip_OnHistogramPoints(object sender,
+            Infrastructure.FrameCapture.CaptureArgs<List<System.Windows.Point>> e)
+        {
+            chartSrcLink.Dispatcher.Invoke(() => {
+                chartSrcLink.BeginInit();
+                Points = e.Result;
+                chartSrcLink.EndInit();
+            });
+        }
+
+        private void SimpleGrip_OnOriginalResult(object sender, Infrastructure.FrameCapture.CaptureArgs<Image<Bgr, float>> e)
+        {
+            imageSrcLink.Dispatcher.Invoke(() => {
+                Context = e.Result.ToBitmap().Convert();
+            });
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
-
             await base.CloseAsync();
         }
     }
