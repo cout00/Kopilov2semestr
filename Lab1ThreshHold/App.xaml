@@ -1,8 +1,7 @@
-﻿<Application x:Class="Lab1ThreshHold.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="/Views/MainWindow.xaml">
-    <Application.Resources>
-        
-    </Application.Resources>
+﻿<Application
+    x:Class="Lab1ThreshHold.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    StartupUri="/Views/MainWindowLab3.xaml">
+    <Application.Resources />
 </Application>

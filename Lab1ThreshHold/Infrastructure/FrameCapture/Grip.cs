@@ -34,17 +34,58 @@ namespace Lab1ThreshHold.Infrastructure.FrameCapture
 
         public async Task DoProcessAsync()
         {
+            ////var query = capture.QueryFrame().ToImage<Gray, byte>();
+            //var data = new byte[10, 6, 1];
+            //for (int i = 0; i < data.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < data.GetLength(1); j++)
+            //    {
+            //        data[i, j, 0] = (byte)i;
+            //    }
+            //}
+            ////OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(query).Convert<Bgr, float>()));
+
+            ////OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(new Image<Gray, byte>(data)).Convert<Bgr, float>()));
+
+
+
+            //Process(new Image<Gray, byte>(data));
+
+            ////Process(query.Convert<Gray, byte>());
+            //Task.Delay(50).Wait();
+
+
+
+
+
             await Task.Run(() => {
                 while (true)
                 {
-                    var query = capture.QueryFrame().ToImage<Gray, byte>();
-                    OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(query).Convert<Bgr,float>()));
+                    var query = capture.QueryFrame().ToImage<Gray, byte>();                    
+                    //var data = new byte[10, 6, 1];
+                    //for (int i = 0; i < data.GetLength(0); i++)
+                    //{
+                    //    for (int j = 0; j < data.GetLength(1); j++)
+                    //    {
+                    //        data[i, j, 0] = (byte)i;
+                    //    }
+                    //}
+                    
+                    OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(query).Convert<Bgr, float>()));
+
+                    //OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(new Image<Gray, byte>(data)).Convert<Bgr, float>()));
+
+
+
+                    //Process(new Image<Gray, byte>(data));
+
                     Process(query.Convert<Gray, byte>());
                     Task.Delay(50).Wait();
                     frames++;
                 }
             });
         }
+        
 
         protected abstract void Process(Image<Gray, byte> queryImage);
     }

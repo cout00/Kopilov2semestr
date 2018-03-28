@@ -42,6 +42,8 @@ namespace Lab1ThreshHold.Infrastructure.Captures
         {
             //создаем гистограмму
             double[] points = new double[byte.MaxValue + 1];
+
+            
             var data = queryImage.Data;
             DataMatrixRenuming(ref data,b =>
             {
@@ -56,16 +58,20 @@ namespace Lab1ThreshHold.Infrastructure.Captures
             //производим нарастающую сумму
             for (int i = 1; i < points.Length; i++)
             {
-                points[i] += points[i - 1];
+                points[i] += (points[i - 1]);
+            }
+            for (int i = 0; i < points.Length; i++)
+            {
+                points[i] = points[i]*255;
             }
             //преобразуем к виду для отображения
             InitPointList(points);
             OnHistogramResultPoints?.Invoke(this, new CaptureArgs<List<Point>>(resPoints));
-            var resultData = queryImage.Data;
+            var resultData = data;
             //применяем функцию на стандартное изображение
             DataMatrixRenuming(ref resultData, b =>
             {
-                return (byte)(points[b] * b);
+                return (byte)(points[b]);
             });
             OnResultImage?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(new Image<Gray, byte>(resultData).Convert<Bgr, float>()));
         }

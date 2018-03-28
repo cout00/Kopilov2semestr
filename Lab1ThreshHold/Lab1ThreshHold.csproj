@@ -102,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\Captures\Lab4Grip.cs" />
+    <Compile Include="Views\MainWindowLab3.xaml.cs">
+      <DependentUpon>MainWindowLab3.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\Lab1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,6 +126,7 @@
     <Compile Include="Infrastructure\FrameCapture\Grip.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Lab1ViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowLab3ViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Lab1.xaml.cs">
       <DependentUpon>Lab1.xaml</DependentUpon>
@@ -130,6 +135,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MainWindowLab3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
