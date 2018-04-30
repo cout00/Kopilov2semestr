@@ -47,12 +47,14 @@ namespace Lab1ThreshHold.ViewModels
         {
             imageSrcLink = Container<Window>.FindElement<Image>(typeof(MainWindowLab3), window => window.Name == "imageSobel");
             imageMainLink = Container<Window>.FindElement<Image>(typeof(MainWindowLab3), window => window.Name == "imageMain");
-            Lab4Grip lab3Grip=new Lab4Grip();
-            lab3Grip.OnNoisedImage += Lab3Grip_OnSobelResult;
-            lab3Grip.OnResultImage += Lab3Grip_OnOriginalResult;
+            Lab3Grip lab3Grip=new Lab3Grip();
+            lab3Grip.OnSobelResult += Lab3Grip_OnSobelResult;
+            lab3Grip.OnOriginalResult += Lab3Grip_OnOriginalResult;
+            //lab3Grip.OnNoisedImage += Lab3Grip_OnSobelResult;
+            //lab3Grip.OnResultImage += Lab3Grip_OnOriginalResult;
             await lab3Grip.DoProcessAsync();
-            await base.InitializeAsync();
-        }
+            await base.InitializeAsync();}
+
 
         private void Lab3Grip_OnOriginalResult(object sender, Infrastructure.FrameCapture.CaptureArgs<Emgu.CV.Image<Emgu.CV.Structure.Bgr, float>> e)
         {

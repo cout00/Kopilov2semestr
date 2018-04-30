@@ -26,6 +26,8 @@ namespace Lab1ThreshHold.Infrastructure.Captures
             return data;
         }
 
+        private int d = 35;
+
         byte[,,] Medianvolution(byte[,,] data, int kernelSize)
         {
             var kernelStep = (int)(kernelSize / 2);
@@ -48,8 +50,8 @@ namespace Lab1ThreshHold.Infrastructure.Captures
                         }
                         kernelPosX++;
                     }
-                    intences.Sort();
-                    resultArray[i, j, 0] = intences[(int)(Math.Truncate(((double)kernelSize*kernelSize)/2) +1)];
+                    intences.Sort();//var test= ;
+                    resultArray[i, j, 0] = (byte)intences.GetRange(d / 2, intences.Count - d).Average(a => a);
                 }
             }
             return resultArray;
@@ -61,7 +63,6 @@ namespace Lab1ThreshHold.Infrastructure.Captures
             OnNoisedImage?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(new Image<Gray, byte>(data).Convert<Bgr,float>()));
             var result= Medianvolution(data, 6);
             OnResultImage?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(new Image<Gray, byte>(result).Convert<Bgr, float>()));
-
         }
     }
 }

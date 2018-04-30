@@ -28,7 +28,7 @@ namespace Lab1ThreshHold.Infrastructure.FrameCapture
             var seconds = (DateTime.Now - _dateTime).TotalSeconds == 0
                 ? 1
                 : (DateTime.Now - _dateTime).TotalSeconds;
-            CvInvoke.PutText(inpImage, "FPS: " + (Math.Round(frames / seconds)).ToString(), new System.Drawing.Point(10, 60), FontFace.HersheySimplex, 1.0, new Bgr(Color.Red).MCvScalar);
+            CvInvoke.PutText(inpImage, "FPS: orig" + (Math.Round(frames / seconds)).ToString(), new System.Drawing.Point(10, 60), FontFace.HersheySimplex, 1.0, new Bgr(Color.Red).MCvScalar);
             return inpImage;
         }
 
@@ -71,15 +71,14 @@ namespace Lab1ThreshHold.Infrastructure.FrameCapture
                     //    }
                     //}
                     
+                    Process(query.Convert<Gray, byte>());
                     OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(query).Convert<Bgr, float>()));
 
                     //OnOriginalResult?.Invoke(this, new CaptureArgs<Image<Bgr, float>>(AddFrameRate(new Image<Gray, byte>(data)).Convert<Bgr, float>()));
 
-
-
+                    
                     //Process(new Image<Gray, byte>(data));
 
-                    Process(query.Convert<Gray, byte>());
                     Task.Delay(50).Wait();
                     frames++;
                 }
